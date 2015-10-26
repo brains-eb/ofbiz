@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <SecurityGroupPermission groupId="FULLADMIN" permissionId="API_ADMIN"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="API_CREATE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="API_DELETE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="API_UPDATE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="API_VIEW"/>
+    <SecurityGroupPermission groupId="VIEWADMIN" permissionId="API_VIEW"/>
+    <SecurityGroupPermission groupId="BIZADMIN" permissionId="API_ADMIN"/>
+</entity-engine-xml>
