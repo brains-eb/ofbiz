@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_71"/>
 	<classpathentry kind="lib" path="applications/content/lib/fontbox-1.7.1.jar"/>
 	<classpathentry kind="lib" path="applications/content/lib/jempbox-1.7.1.jar"/>
 	<classpathentry kind="lib" path="applications/content/lib/pdfbox-1.7.1.jar"/>
@@ -163,5 +163,8 @@
 	<classpathentry exported="true" kind="lib" path="framework/base/lib/j2eespecs/servlet-api-3.0.jar"/>
 	<classpathentry kind="con" path="GROOVY_SUPPORT"/>
 	<classpathentry kind="con" path="GROOVY_DSL_SUPPORT"/>
+	<classpathentry kind="lib" path="framework/base/lib/commons/commons-pool2-2.2.jar"/>
+	<classpathentry kind="lib" path="framework/catalina/lib/jedis-2.5.2.jar"/>
+	<classpathentry kind="lib" path="framework/catalina/lib/tomcat-redis-session-manage-tomcat7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

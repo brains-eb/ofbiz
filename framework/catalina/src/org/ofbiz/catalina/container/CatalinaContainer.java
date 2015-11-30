@@ -34,8 +34,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.xml.parsers.ParserConfigurationException;
 
-import javolution.util.FastList;
-
 import org.apache.catalina.Cluster;
 import org.apache.catalina.Context;
 import org.apache.catalina.Engine;
@@ -81,6 +79,7 @@ import org.ofbiz.base.container.ContainerException;
 import org.ofbiz.base.location.FlexibleLocation;
 import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.SSLUtil;
+import org.ofbiz.base.util.UtilProperties;
 import org.ofbiz.base.util.UtilURL;
 import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.base.util.UtilXml;
@@ -89,6 +88,11 @@ import org.ofbiz.entity.DelegatorFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import com.orangefunction.tomcat.redissessions.RedisSessionHandlerValve;
+import com.orangefunction.tomcat.redissessions.RedisSessionManager;
+
+import javolution.util.FastList;
 
 /*
  * --- Access Log Pattern Information - From Tomcat 5 AccessLogValve.java
@@ -151,6 +155,7 @@ public class CatalinaContainer implements Container {
     public static final String module = CatalinaContainer.class.getName();
     protected static Map<String, String> mimeTypes = new HashMap<String, String>();
     private static final ThreadGroup CATALINA_THREAD_GROUP = new ThreadGroup("CatalinaContainer");
+    private static final String REDIS = "redis.properties";
 
     // load the JSSE propertes (set the trust store)
     static {
@@ -754,6 +759,23 @@ public class CatalinaContainer implements Container {
         // set the init parameters
         for (Map.Entry<String, String> entry: initParameters.entrySet()) {
             context.addParameter(entry.getKey(), entry.getValue());
+        }
+        
+        // 使用redis作session持久化共享
+        boolean redisEnable = UtilProperties.getPropertyAsBoolean(REDIS, "redis.enable", false);
+        if(redisEnable){
+        	int maxInactiveInterval = UtilProperties.getPropertyAsInteger(REDIS, "max.inactive.interval", 60);
+        	String redisHost =  UtilProperties.getPropertyValue(REDIS, "host", "127.0.0.1");
+        	int port = UtilProperties.getPropertyAsInteger(REDIS, "port", 6379);
+        	int database = UtilProperties.getPropertyAsInteger(REDIS, "database", 0);
+	        RedisSessionHandlerValve valve = new RedisSessionHandlerValve();
+	        RedisSessionManager sessionManager = new RedisSessionManager();
+	        sessionManager.setMaxInactiveInterval(maxInactiveInterval);
+	        sessionManager.setHost(redisHost);
+	        sessionManager.setPort(port);
+	        sessionManager.setDatabase(database);
+	        context.addValve(valve);
+	        context.setManager(sessionManager);
         }
 
         context.setRealm(host.getRealm());
