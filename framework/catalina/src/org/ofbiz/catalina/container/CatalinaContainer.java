@@ -540,10 +540,10 @@ public class CatalinaContainer implements Container {
                     connector = new Connector();
                 } else if (protocol.equals("https")) {
                     connector = new Connector();
-                    connector.setScheme("https");
-                    connector.setSecure(true);
-                    connector.setProperty("SSLEnabled","true");
-                    // FIXME !!!! SET SSL PROPERTIES
+                    // 不再需要，放到properties.values下面去设定
+//                    connector.setScheme("https");
+//                    connector.setSecure(true);
+//                    connector.setProperty("SSLEnabled","true");
                 } else {
                     connector = new Connector(protocol);
                 }
@@ -561,7 +561,9 @@ public class CatalinaContainer implements Container {
                 for (ContainerConfig.Container.Property prop: connectorProp.properties.values()) {
                     if ("port".equals(prop.name)) { 
                         connector.setProperty(prop.name, "" + port);
-                    } else {
+                    } else if ("secure".equals(prop.name)) {
+                    	connector.setSecure(secure);
+                    }else {
                         connector.setProperty(prop.name, prop.value);
                         //connector.setAttribute(prop.name, prop.value);
                     }
