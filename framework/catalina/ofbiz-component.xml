@@ -144,7 +144,7 @@ under the License.
             <property name="proxyName" value=""/>
             <property name="proxyPort" value=""/>
             <property name="redirectPort" value=""/>
-            <property name="scheme" value="https"/>
+            <property name="scheme" value="http"/>
             <property name="secure" value="true"/>
             <property name="URIEncoding" value="UTF-8"/>
             <property name="useBodyEncodingForURI" value="false"/>
@@ -184,6 +184,8 @@ under the License.
             <property name="keystoreType" value="JKS"/>
             <property name="sslProtocol" value="TLS"/>
             <property name="ciphers" value=""/>
+            <!-- 新增一个配置参数用于让https的connector不启用ssl -->
+            <!-- <property name="SSLEnabled" value="false"/> -->
         </property>
     </container>
     <container name="catalina-container-test" loaders="test" class="org.ofbiz.catalina.container.CatalinaContainer">
