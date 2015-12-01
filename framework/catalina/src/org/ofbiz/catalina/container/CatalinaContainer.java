@@ -64,6 +64,7 @@ import org.apache.catalina.tribes.transport.ReplicationTransmitter;
 import org.apache.catalina.tribes.transport.nio.NioReceiver;
 import org.apache.catalina.util.ServerInfo;
 import org.apache.catalina.valves.AccessLogValve;
+import org.apache.catalina.valves.RemoteIpValve;
 import org.apache.coyote.ProtocolHandler;
 import org.apache.coyote.http11.Http11Protocol;
 import org.apache.tomcat.JarScanner;
@@ -294,6 +295,13 @@ public class CatalinaContainer implements Container {
         MemoryRealm realm = new MemoryRealm();
         realm.setPathname(dbConfigPath);
         engine.setRealm(realm);
+
+        // 解决反向代理getScheme，isSecure，sendRedirect等问题
+        RemoteIpValve remoteIpValve = new RemoteIpValve();
+        remoteIpValve.setRemoteIpHeader("X-Forwarded-For");
+        remoteIpValve.setProtocolHeader("X-Forwarded-Proto");
+        remoteIpValve.setProtocolHeaderHttpsValue("https");
+        engine.addValve(remoteIpValve);
 
         // cache the engine
         engines.put(engine.getName(), engine);
